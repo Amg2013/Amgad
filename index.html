@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amgad Nady | Software Engineer & Flutter Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <style>
+        :root {
+            --primary: #00aaff;
+            --primary-light: #e6f7ff;
+            --secondary: #5100ff;
+            --dark: #121212;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --dark-transparent: rgba(0, 0, 0, 0.85);
+            --light-transparent: rgba(248, 249, 250, 0.85);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-light: rgba(0, 0, 0, 0.05);
+            --background-image: url("./flutter-e1625644676239.webp");
+            --overlay-gradient: linear-gradient(135deg, rgba(0, 10, 20, 0.9) 0%, rgba(0, 40, 80, 0.7) 100%);
+            --text-color: #f8f9fa;
+            --text-color-dark: #121212;
+        }
+        :root[data-theme="light"] {
+            --primary: #0077cc;
+            --primary-light: #f0f9ff;
+            --secondary: #3a00ff;
+            --dark: #ffffff;
+            --light: #333;
+            --gray: #495057;
+            --gray-light: #f8f9fa;
+            --dark-transparent: rgba(255, 255, 255, 0.85);
+            --light-transparent: rgba(33, 37, 41, 0.85);
+            --glass: rgba(0, 0, 0, 0.03);
+            --glass-light: rgba(0, 0, 0, 0.03);
+            --overlay-gradient: rgba(255, 255, 255, 0.96);
+            --text-color: #333;
+            --text-color-dark: rgb(248, 249, 250);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            color: var(--text-color);
+            background-image: var(--background-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-gradient);
+            z-index: -1;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 1rem 2rem;
+            background-color: var(--dark-transparent);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        nav.scrolled {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            margin: 0 auto;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+            background-color: rgba(0, 170, 255, 0.1);
+        }
+        .theme-switch {
+            margin-left: 1rem;
+        }
+        /* Theme switch minimal visual styles */
+        .theme-switch {
+            cursor: pointer;
+            user-select: none;
+        }
+        .theme-switch__checkbox {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .theme-switch__container {
+            width: 56px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            padding: 3px;
+            position: relative;
+        }
+        :root[data-theme="light"] .theme-switch__container {
+            background-color: rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+        .theme-switch__circle-container {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--text-color);
+            transform: translateX(0);
+            transition: transform 0.25s ease-in-out, background-color 0.25s ease-in-out;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container {
+            transform: translateX(26px);
+        }
+        /* Hide decorative parts if detailed styles are not present */
+        .theme-switch__clouds,
+        .theme-switch__stars-container,
+        .theme-switch__sun-moon-container,
+        .theme-switch__moon,
+        .theme-switch__spot {
+            display: none;
+        }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 1.5rem 2rem;
+            position: relative;
+        }
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), #00ccff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: fadeIn 1s ease;
+            line-height: 1.2;
+        }
+        .hero h2 {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            opacity: 0.9;
+            animation: fadeIn 1.2s ease;
+        }
+        .hero p {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--gray);
+            animation: fadeIn 1.4s ease;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            animation: fadeIn 1.6s ease;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--text-color-dark);
+            box-shadow: 0 4px 15px rgba(0, 170, 255, 0.4);
+        }
+        .btn-primary:hover {
+            background-color: #0088cc;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 170, 255, 0.6);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-secondary:hover {
+            background-color: rgba(0, 170, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        section {
+            padding: 4rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            color: var(--primary);
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            border-radius: 2px;
+        }
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+        .about-image {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        .skills-highlight ul{
+            padding-left: 20px;
+        }
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .skill-category {
+            background-color: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        .skill-category h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .skill-category ul {
+            list-style-type: none;
+        }
+        .skill-category li {
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+        .skill-category li::before {
+            content: '▹';
+            color: var(--primary);
+        }
+        /* Projects Section - Horizontal Scroll */
+        .projects-section {
+            overflow-x: auto;
+            padding-bottom: 2rem;
+        }
+        .projects-grid {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            /* Disable snap to allow perfectly smooth auto-scroll */
+            /* scroll-snap-type: x mandatory; */
+            -ms-overflow-style: none; /* IE/Edge */
+            scrollbar-width: none; /* Firefox */
+            /* Prevent user horizontal panning; allow vertical */
+            touch-action: pan-y;
+            overscroll-behavior-x: contain;
+        }
+        .projects-grid::-webkit-scrollbar { /* Chrome/Safari */
+            display: none;
+            width: 0;
+            height: 0;
+        }
+        .project-card {
+            min-width: 320px;
+            max-width: 340px;
+            background-color: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            scroll-snap-align: start;
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card img{
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 170, 255, 0.1);
+        }
+        .project-card:hover img{
+            transform: scale(1.05);
+        }
+        .project-info {
+            padding: 0.4rem 1.2rem 1.2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.6rem;
+            color: var(--primary);
+        }
+        .project-info p {
+            margin-bottom: 1.2rem;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+        .tech-tag {
+            background-color: rgba(0, 170, 255, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+        .project-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .project-links a:hover {
+            color: var(--primary);
+        }
+        /* Timeline Section */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 30px;
+            width: 2px;
+            height: 100%;
+            background-color: var(--primary);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            width: 100%;
+            padding-left: 70px;
+            text-align: left;
+        }
+        .timeline-content {
+            background-color: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            top: 20px;
+            left: -43px;
+        }
+        .timeline-date {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .timeline-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-color);
+        }
+        .timeline-content p {
+            font-size: 0.95rem;
+            color: var(--gray);
+        }
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.2rem;
+        }
+        .contact-card {
+            background-color: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+        .contact-card a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            width: 100%;
+        }
+        .contact-card a:hover {
+            color: var(--primary);
+        }
+        .contact-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(0, 170, 255, 0.1);
+        }
+        .contact-icon {
+            font-size: 1.3rem;
+            color: var(--primary);
+            min-width: 36px;
+            text-align: center;
+        }
+        .contact-text h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            color: var(--text-color);
+        }
+        .contact-text a, 
+        .contact-text p {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .contact-text a:hover {
+            color: var(--primary);
+        }
+        /* Footer */
+        footer {
+            background-color: var(--dark-transparent);
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .copyright {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translate3d(0, 24px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        .reveal-on-scroll { opacity: 0; transform: translateY(16px); }
+        .reveal-on-scroll.revealed { opacity: 1; transform: translateY(0); animation: fadeInUp 0.6s ease both; }
+        @media (min-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr 1fr;
+            }
+            .about-image {
+                order: 1;
+            }
+            .contact-container {
+                grid-template-columns: 1fr 1fr;
+            }
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                gap: 1.5rem;
+            }
+        }
+        @media (min-width: 992px) {
+            .timeline::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .timeline-item {
+                padding-left: 0;
+                padding-right: calc(50% + 2rem);
+                text-align: right;
+            }
+            .timeline-item:nth-child(even) {
+                padding-left: calc(50% + 2rem);
+                padding-right: 0;
+                text-align: left;
+            }
+            .timeline-item:nth-child(odd) .timeline-content::before {
+                right: -43px;
+                left: auto;
+            }
+            .timeline-item:nth-child(even) .timeline-content::before {
+                left: -43px;
+            }
+        }
+        @media (max-width: 576px) {
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                justify-content: center;
+            }
+            .nav-links {
+                gap: 0.5rem;
+            }
+            a.logo{
+                display: none;
+            }
+            .nav-links a {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.6rem;
+            }
+            .logo {
+                font-size: 1.3rem;
+            }
+            section {
+                padding: 3rem 1rem;
+            }
+            .theme-switch{
+                transform: scale(0.6);
+            }
+            .projects-grid {
+                min-width: 100vw;
+            }
+            .project-card {
+                min-width: 80vw;
+                max-width: 90vw;
+            }
+        }
+        @media (max-width: 400px) {
+            nav {
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                gap: 0px;
+            }
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.3rem;
+            }
+            .logo {
+                font-size: 1.2rem;
+            }
+            .skill-category {
+                padding: 1.2rem;
+            }
+        }
+        @media (max-width:670px) {
+            a.logo{
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Amgad Nady</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#timeline">Timeline</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <label class="theme-switch">
+                <input type="checkbox" class="theme-switch__checkbox" id="themeToggle">
+                <div class="theme-switch__container">
+                    <div class="theme-switch__clouds"></div>
+                    <div class="theme-switch__stars-container">
+                        <!-- ...SVG unchanged... -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 55" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M135.831 3.00688C135.055 3.85027 134.111 4.29946 133 4.35447C134.111 4.40947 135.055 4.85867 135.831 5.71123C136.607 6.55462 136.996 7.56303 136.996 8.72727C136.996 7.95722 137.172 7.25134 137.525 6.59129C137.886 5.93124 138.372 5.39954 138.98 5.00535C139.598 4.60199 140.268 4.39114 141 4.35447C139.88 4.2903 138.936 3.85027 138.16 3.00688C137.384 2.16348 136.996 1.16425 136.996 0C136.996 1.16425 136.607 2.16348 135.831 3.00688ZM31 23.3545C32.1114 23.2995 33.0551 22.8503 33.8313 22.0069C34.6075 21.1635 34.9956 20.1642 34.9956 19C34.9956 20.1642 35.3837 21.1635 36.1599 22.0069C36.9361 22.8503 37.8798 23.2903 39 23.3545C38.2679 23.3911 37.5976 23.602 36.9802 24.0053C36.3716 24.3995 35.8864 24.9312 35.5248 25.5913C35.172 26.2513 34.9956 26.9572 34.9956 27.7273C34.9956 26.563 34.6075 25.5546 33.8313 24.7112C33.0551 23.8587 32.1114 23.4095 31 23.3545ZM0 36.3545C1.11136 36.2995 2.05513 35.8503 2.83131 35.0069C3.6075 34.1635 3.99559 33.1642 3.99559 32C3.99559 33.1642 4.38368 34.1635 5.15987 35.0069C5.93605 35.8503 6.87982 36.2903 8 36.3545C7.26792 36.3911 6.59757 36.602 5.98015 37.0053C5.37155 37.3995 4.88644 37.9312 4.52481 38.5913C4.172 39.2513 3.99559 39.9572 3.99559 40.7273C3.99559 39.563 3.6075 38.5546 2.83131 37.7112C2.05513 36.8587 1.11136 36.4095 0 36.3545ZM56.8313 24.0069C56.0551 24.8503 55.1114 25.2995 54 25.3545C55.1114 25.4095 56.0551 25.8587 56.8313 26.7112C57.6075 27.5546 57.9956 28.563 57.9956 29.7273C57.9956 28.9572 58.172 28.2513 58.5248 27.5913C58.8864 26.9312 59.3716 26.3995 59.9802 26.0053C60.5976 25.602 61.2679 25.3911 62 25.3545C60.8798 25.2903 59.9361 24.8503 59.1599 24.0069C58.3837 23.1635 57.9956 22.1642 57.9956 21C57.9956 22.1642 57.6075 23.1635 56.8313 24.0069ZM81 25.3545C82.1114 25.2995 83.0551 24.8503 83.8313 24.0069C84.6075 23.1635 84.9956 22.1642 84.9956 21C84.9956 22.1642 85.3837 23.1635 86.1599 24.0069C86.9361 24.8503 87.8798 25.2903 89 25.3545C88.2679 25.3911 87.5976 25.602 86.9802 26.0053C86.3716 26.3995 85.8864 26.9312 85.5248 27.5913C85.172 28.2513 84.9956 28.9572 84.9956 29.7273C84.9956 28.563 84.6075 27.5546 83.8313 26.7112C83.0551 25.8587 82.1114 25.4095 81 25.3545ZM136 36.3545C137.111 36.2995 138.055 35.8503 138.831 35.0069C139.607 34.1635 139.996 33.1642 139.996 32C139.996 33.1642 140.384 34.1635 141.16 35.0069C141.936 35.8503 142.88 36.2903 144 36.3545C143.268 36.3911 142.598 36.602 141.98 37.0053C141.372 37.3995 140.886 37.9312 140.525 38.5913C140.172 39.2513 139.996 39.9572 139.996 40.7273C139.996 39.563 139.607 38.5546 138.831 37.7112C138.055 36.8587 137.111 36.4095 136 36.3545ZM101.831 49.0069C101.055 49.8503 100.111 50.2995 99 50.3545C100.111 50.4095 101.055 50.8587 101.831 51.7112C102.607 52.5546 102.996 53.563 102.996 54.7273C102.996 53.9572 103.172 53.2513 103.525 52.5913C103.886 51.9312 104.372 51.3995 104.98 51.0053C105.598 50.602 106.268 50.3911 107 50.3545C105.88 50.2903 104.936 49.8503 104.16 49.0069C103.384 48.1635 102.996 47.1642 102.996 46C102.996 47.1642 102.607 48.1635 101.831 49.0069Z" fill="currentColor"></path>
+                        </svg>
+                    </div>
+                    <div class="theme-switch__circle-container">
+                        <div class="theme-switch__sun-moon-container">
+                            <div class="theme-switch__moon">
+                                <div class="theme-switch__spot"></div>
+                                <div class="theme-switch__spot"></div>
+                                <div class="theme-switch__spot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </label>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Amgad Nady</h1>
+            <h2>Software Engineer • Flutter Developer • Mobile Development Instructor</h2>
+            <p>A passionate Flutter developer and educator with a Bachelor’s degree in Computer Science & AI, specialized in building scalable mobile apps using clean architecture, Bloc/Cubit, and Firebase. I thrive on solving problems and mentoring new developers.</p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">
+                    <i class="fas fa-code"></i> View My Work
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <i class="fas fa-paper-plane"></i> Contact Info
+                </a>
+            </div>
+            <div class="social-links">
+                <a href="https://github.com/amg2013" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/amgad-nady?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="mailto:amgonemilwork@gmail.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>
+                    I’m a software engineer and mobile development instructor based in Cairo, Egypt. My expertise is in Flutter, clean architecture, and scalable app design. I enjoy mentoring new developers and building impactful solutions for real-world problems.
+                </p>
+                <div class="skills-highlight">
+                    <h3>Technical Focus:</h3>
+                    <ul>
+                        <li>Cross-platform mobile development with Flutter</li>
+                        <li>Clean architecture, MVVM, SOLID principles</li>
+                        <li>Performance optimization & scalable code</li>
+                        <li>Mentoring and technical leadership</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="my_photo.jpg" alt="Amgad Nady">
+            </div>
+        </div>
+    </section>
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 class="section-title">Technical Skills</h2>
+        <div class="skills-container">
+            <div class="skill-category">
+                <h3><i class="fas fa-code"></i> Core Languages & Frameworks</h3>
+                <ul>
+                    <li>Dart (Advanced)</li>
+                    <li>Flutter (Advanced)</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3><i class="fas fa-cogs"></i> State Management</h3>
+                <ul>
+                    <li>Bloc</li>
+                    <li>Cubit</li>
+                    <li>Provider</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3><i class="fas fa-layer-group"></i> Architecture & Patterns</h3>
+                <ul>
+                    <li>Clean Architecture</li>
+                    <li>MVVM</li>
+                    <li>SOLID Principles</li>
+                    <li>Design Patterns</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3><i class="fas fa-database"></i> Backend & Data</h3>
+                <ul>
+                    <li>REST APIs</li>
+                    <li>Firebase (Auth, Firestore, Cloud Functions)</li>
+                    <li>Hive</li>
+                    <li>Secure Storage</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3><i class="fas fa-tools"></i> Dev Tools & Deployment</h3>
+                <ul>
+                    <li>Git/GitHub</li>
+                    <li>CI/CD pipelines</li>
+                    <li>App Store & Google Play publishing</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3><i class="fas fa-wrench"></i> Other Tools</h3>
+                <ul>
+                    <li>Localization</li>
+                    <li>FCM (Firebase Cloud Messaging)</li>
+                    <li>Background Services</li>
+                    <li>Testing</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="./al_awail.jpg" alt="Al Awail Educational App">
+                <div class="project-info">
+                    <h3>Al Awail (Educational App)</h3>
+                    <p>Gamified learning platform with lessons and interactive challenges.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Bloc</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">Clean Architecture</span>
+                    </div>
+                    <div class="project-links"></div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="./split.jpg" alt="Splitwise-Style Expense Tracker">
+                <div class="project-info">
+                    <h3>Splitwise-Style Expense Tracker</h3>
+                    <p>Group expenses with real-time summaries and notifications.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Cloud Firestore</span>
+                        <span class="tech-tag">Bloc</span>
+                        <span class="tech-tag">Local Notifications</span>
+                    </div>
+                    <div class="project-links"></div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="./request_app.jpg" alt="Request App">
+                <div class="project-info">
+                    <h3>Request (اطلب)</h3>
+                    <p>On-demand service platform enabling users to request various services with real-time tracking and notifications.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Bloc</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">REST APIs</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://play.google.com/store/apps/details?id=com.Request.request" target="_blank" aria-label="Google Play">
+                            <i class="fab fa-google-play"></i> Google Play
+                        </a>
+                        <a href="https://apps.apple.com/us/app/request-%D8%A7%D8%B7%D9%84%D8%A8/id6670768152" target="_blank" aria-label="App Store">
+                            <i class="fab fa-app-store-ios"></i> App Store
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="./mobasraat.jpg" alt="Mubashirat Dreams & Visions Interpretation App">
+                <div class="project-info">
+                    <h3>Mubashirat – Dreams & Visions Interpretation</h3>
+                    <p>Collaborated with the MMD team to build a social platform for 50,000+ users with real-time posts, comments, and notifications, separating UI from business logic. Reduced image upload latency by 10% via Firebase Storage optimization and caching.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Dart</span>
+                        <span class="tech-tag">Bloc</span>
+                        <span class="tech-tag">Secure Storage</span>
+                        <span class="tech-tag">Firestore</span>
+                        <span class="tech-tag">FCM</span>
+                        <span class="tech-tag">Local Notifications</span>
+                        <span class="tech-tag">Social Auth</span>
+                        <span class="tech-tag">WebView</span>
+                        <span class="tech-tag">Themes</span>
+                        <span class="tech-tag">Clean Architecture</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://play.google.com/store/apps/details?id=com.mubashirat&pcampaignid=web_share" target="_blank" aria-label="Google Play">
+                            <i class="fab fa-google-play"></i> Google Play
+                        </a>
+                        <a href="https://apps.apple.com/sa/app/%D9%85%D8%A8%D8%B4%D8%B1%D8%A7%D8%AA-%D8%AA%D9%81%D8%B3%D9%8A%D8%B1-%D8%A7%D9%84%D8%B1%D8%A4%D9%89-%D9%88-%D8%A7%D9%84%D8%A7%D8%AD%D9%84%D8%A7%D9%85/id6444949709" target="_blank" aria-label="App Store">
+                            <i class="fab fa-app-store-ios"></i> App Store
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="./vpn_app.jpg" alt="VPN App">
+                <div class="project-info">
+                    <h3>VPN App</h3>
+                    <p>Secure connection with caching & in-app purchase support.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Secure Storage</span>
+                        <span class="tech-tag">In-App Purchase</span>
+                    </div>
+                    <div class="project-links"></div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="./mosaad_app.jpg" alt="Mosaada Vehicle Assistance App">
+                <div class="project-info">
+                    <h3>Mosaada (Vehicle Assistance App)</h3>
+                    <p>On-demand roadside assistance with geolocation and real-time updates.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Dart</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">Geolocation</span>
+                        <span class="tech-tag">REST APIs</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://play.google.com/store/apps/details?id=com.mixcode.mosaada&hl=en" target="_blank" aria-label="Google Play">
+                            <i class="fab fa-google-play"></i> Google Play
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="./request_app.jpg" alt="Immo Track">
+                <div class="project-info">
+                    <h3>Immo Track (Android & iOS)</h3>
+                    <p>Real estate task management app to assign tasks with instructions, track progress, and let employees submit status reports.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Bloc</span>
+                        <span class="tech-tag">Hive</span>
+                        <span class="tech-tag">FCM</span>
+                        <span class="tech-tag">Local Notifications</span>
+                        <span class="tech-tag">App Links</span>
+                        <span class="tech-tag">Localization</span>
+                    </div>
+                    <div class="project-links"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Timeline Section -->
+    <section id="timeline">
+        <h2 class="section-title">My Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Aug 2025 – Present</div>
+                    <h3 class="timeline-title">Flutter Developer – Mixcod</h3>
+                    <p>Building scalable mobile apps and leading technical solutions for Mixcod.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Jul 2025 – Present</div>
+                    <h3 class="timeline-title">Mobile Development Instructor – ITI</h3>
+                    <p>Mentoring new developers and delivering advanced mobile development courses at the Information Technology Institute.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Jun 2025 – Present</div>
+                    <h3 class="timeline-title">Mobile Development Instructor – NIT</h3>
+                    <p>Teaching mobile development and guiding students at the National Institute of Technology.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2022 – 2025</div>
+                    <h3 class="timeline-title">Bachelor’s Degree in Computer Science & AI</h3>
+                    <p>Graduated with honors, specializing in mobile development and artificial intelligence.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Contact Information</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-card">
+                    <a href="mailto:amgonemilwork@gmail.com" aria-label="Email">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Email</h3>
+                            <span>amgonemilwork@gmail.com</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Phone 1</h3>
+                        <a href="tel:+201069473692">+20 106 947 3692</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Phone 2</h3>
+                        <a href="tel:+201276533213">+20 127 653 3213</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>LinkedIn</h3>
+                        <a href="https://www.linkedin.com/in/amgad-nady?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">Amgad Nady</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>GitHub</h3>
+                        <a href="https://github.com/amg2013" target="_blank">amg2013</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Location</h3>
+                        <p>Cairo, Egypt</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="copyright">© 2025 Amgad Nady. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        // Theme toggle functionality with localStorage
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'light' || (!currentTheme && !prefersDarkScheme.matches)) {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeToggle.checked = false;
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeToggle.checked = true;
+        }
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^=\"#\"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        // Change navigation style on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        // Highlight active section in navbar
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll', function() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        // Animation on scroll
+        // Staggered reveal on scroll with IntersectionObserver for better performance
+        const revealTargets = document.querySelectorAll('.skill-category, .project-card, .timeline-item');
+        revealTargets.forEach((el, index) => {
+            el.classList.add('reveal-on-scroll');
+            el.style.transitionDelay = `${(index % 6) * 60}ms`;
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+        revealTargets.forEach(el => observer.observe(el));
+
+        // Auto-scroll Projects carousel when section is in view (seamless loop)
+        (function enableAutoScrollProjects() {
+            const projectsGrid = document.querySelector('.projects-grid');
+            const projectsSection = document.getElementById('projects');
+            if (!projectsGrid || !projectsSection) return;
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduceMotion) return;
+
+            // Duplicate children for seamless looping (only once)
+            const originalCards = Array.from(projectsGrid.children);
+            if (originalCards.length === 0) return;
+            const clones = originalCards.map(node => node.cloneNode(true));
+            projectsGrid.append(...clones);
+
+            let isPaused = false;
+            let isActive = false; // becomes true when section is on screen
+            let speedPxPerFrame = 0.6; // Adjust speed here
+
+            const pause = () => { isPaused = true; };
+            const resume = () => { isPaused = false; };
+            projectsGrid.addEventListener('mouseenter', pause);
+            projectsGrid.addEventListener('mouseleave', resume);
+            projectsGrid.addEventListener('touchstart', pause, { passive: true });
+            projectsGrid.addEventListener('touchend', resume, { passive: true });
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    isActive = entry.isIntersecting;
+                });
+            }, { threshold: 0.25 });
+            sectionObserver.observe(projectsSection);
+
+            function tick() {
+                if (!isPaused && isActive) {
+                    projectsGrid.scrollLeft += speedPxPerFrame;
+                    const halfWidth = projectsGrid.scrollWidth / 2;
+                    if (projectsGrid.scrollLeft >= halfWidth) {
+                        // Jump back by half width without visual jump
+                        projectsGrid.scrollLeft -= halfWidth;
+                    }
+                }
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        })();
+    </script>
+</body>
