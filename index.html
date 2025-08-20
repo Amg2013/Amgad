@@ -1175,7 +1175,6 @@
             projectsGrid.addEventListener('mouseleave', resume);
             projectsGrid.addEventListener('touchstart', pause, { passive: true });
             projectsGrid.addEventListener('touchend', resume, { passive: true });
-
             const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     isActive = entry.isIntersecting;
