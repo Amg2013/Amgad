@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="favicon.png" />
     <style>
-        :root {
+         :root {
             --primary: #00aaff;
             --primary-light: #e6f7ff;
             --secondary: #5100ff;
@@ -19,11 +19,12 @@
             --light-transparent: rgba(248, 249, 250, 0.85);
             --glass: rgba(255, 255, 255, 0.05);
             --glass-light: rgba(0, 0, 0, 0.05);
-            --background-image: url("./flutter-e1625644676239.webp");
+          --background-image: url("./flutter-background.webp");
             --overlay-gradient: linear-gradient(135deg, rgba(0, 10, 20, 0.9) 0%, rgba(0, 40, 80, 0.7) 100%);
             --text-color: #f8f9fa;
             --text-color-dark: #121212;
         }
+
         :root[data-theme="light"] {
             --primary: #0077cc;
             --primary-light: #f0f9ff;
@@ -36,6 +37,7 @@
             --light-transparent: rgba(33, 37, 41, 0.85);
             --glass: rgba(0, 0, 0, 0.03);
             --glass-light: rgba(0, 0, 0, 0.03);
+            --background-image: url("./flutter-background.webp");
             --overlay-gradient: rgba(255, 255, 255, 0.96);
             --text-color: #333;
             --text-color-dark: rgb(248, 249, 250);
@@ -135,41 +137,177 @@
             opacity: 0;
             pointer-events: none;
         }
+               /* Theme Toggle Switch */
+        .theme-switch {
+            --toggle-size: 20px;
+            --container-width: 3.5em;
+            --container-height: 1.8em;
+            --container-radius: 6.25em;
+            --container-light-bg: #3D7EAE;
+            --container-night-bg: #1D1F2C;
+            --circle-container-diameter: 2.2em;
+            --sun-moon-diameter: 1.4em;
+            --sun-bg: #ECCA2F;
+            --moon-bg: #C4C9D1;
+            --spot-color: #959DB1;
+            --circle-container-offset: calc((var(--circle-container-diameter) - var(--container-height)) / 2 * -1);
+            --stars-color: #fff;
+            --clouds-color: #F3FDFF;
+            --back-clouds-color: #AACADF;
+            --transition: .3s cubic-bezier(0, -0.02, 0.4, 1.25);
+            --circle-transition: .2s cubic-bezier(0, -0.02, 0.35, 1.17);
+            margin-left: 1rem;
+        }
+
+        .theme-switch, .theme-switch *, .theme-switch *::before, .theme-switch *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-size: var(--toggle-size);
+        }
+
         .theme-switch__container {
-            width: 56px;
-            height: 30px;
-            background-color: rgba(255, 255, 255, 0.18);
-            border: 1px solid rgba(255, 255, 255, 0.28);
-            border-radius: 999px;
-            display: inline-flex;
-            align-items: center;
-            padding: 3px;
+            width: var(--container-width);
+            height: var(--container-height);
+            background-color: var(--container-light-bg);
+            border-radius: var(--container-radius);
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0em -0.062em 0.062em rgba(0, 0, 0, 0.25), 0em 0.062em 0.125em rgba(255, 255, 255, 0.94);
+            transition: var(--transition);
             position: relative;
         }
-        :root[data-theme="light"] .theme-switch__container {
-            background-color: rgba(0, 0, 0, 0.08);
-            border-color: rgba(0, 0, 0, 0.12);
+
+        .theme-switch__container::before {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            box-shadow: 0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset, 0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset;
+            border-radius: var(--container-radius)
         }
-        .theme-switch__circle-container {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background-color: var(--text-color);
-            transform: translateX(0);
-            transition: transform 0.25s ease-in-out, background-color 0.25s ease-in-out;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-        }
-        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container {
-            transform: translateX(26px);
-        }
-        /* Hide decorative parts if detailed styles are not present */
-        .theme-switch__clouds,
-        .theme-switch__stars-container,
-        .theme-switch__sun-moon-container,
-        .theme-switch__moon,
-        .theme-switch__spot {
+
+        .theme-switch__checkbox {
             display: none;
         }
+
+        .theme-switch__circle-container {
+            width: var(--circle-container-diameter);
+            height: var(--circle-container-diameter);
+            background-color: rgba(255, 255, 255, 0.1);
+            position: absolute;
+            left: var(--circle-container-offset);
+            top: var(--circle-container-offset);
+            border-radius: var(--container-radius);
+            box-shadow: inset 0 0 0 3.375em rgba(255, 255, 255, 0.1), inset 0 0 0 3.375em rgba(255, 255, 255, 0.1), 0 0 0 0.625em rgba(255, 255, 255, 0.1), 0 0 0 1.25em rgba(255, 255, 255, 0.1);
+            display: flex;
+            transition: var(--circle-transition);
+            pointer-events: none;
+        }
+
+        .theme-switch__sun-moon-container {
+            pointer-events: auto;
+            position: relative;
+            z-index: 2;
+            width: var(--sun-moon-diameter);
+            height: var(--sun-moon-diameter);
+            margin: auto;
+            border-radius: var(--container-radius);
+            background-color: var(--sun-bg);
+            box-shadow: 0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset, 0em -0.062em 0.062em 0em #a1872a inset;
+            filter: drop-shadow(0.062em 0.125em 0.125em rgba(0, 0, 0, 0.25)) drop-shadow(0em 0.062em 0.125em rgba(0, 0, 0, 0.25));
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .theme-switch__moon {
+            transform: translateX(100%);
+            width: 100%;
+            height: 100%;
+            background-color: var(--moon-bg);
+            border-radius: inherit;
+            box-shadow: 0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset, 0em -0.062em 0.062em 0em #969696 inset;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .theme-switch__spot {
+            position: absolute;
+            top: 0.5em;
+            left: 0.2em;
+            width: 0.5em;
+            height: 0.5em;
+            border-radius: var(--container-radius);
+            background-color: var(--spot-color);
+            box-shadow: 0em 0.0312em 0.062em rgba(0, 0, 0, 0.25) inset;
+        }
+
+        .theme-switch__spot:nth-of-type(2) {
+            width: 0.25em;
+            height: 0.25em;
+            top: 0.6em;
+            left: 0.9em;
+        }
+
+        .theme-switch__spot:nth-last-of-type(3) {
+            width: 0.15em;
+            height: 0.15em;
+            top: 0.2em;
+            left: 0.5em;
+        }
+
+        .theme-switch__clouds {
+            width: 0.8em;
+            height: 0.8em;
+            background-color: var(--clouds-color);
+            border-radius: var(--container-radius);
+            position: absolute;
+            bottom: -0.4em;
+            left: 0.2em;
+            box-shadow: 0.6em 0.2em var(--clouds-color), -0.2em -0.2em var(--back-clouds-color), 0.9em 0.25em var(--clouds-color), 0.3em -0.1em var(--back-clouds-color), 1.4em 0 var(--clouds-color), 0.8em -0.05em var(--back-clouds-color), 1.9em 0.2em var(--clouds-color), 1.3em -0.2em var(--back-clouds-color), 2.4em -0.05em var(--clouds-color), 1.7em 0em var(--back-clouds-color), 3em -0.2em var(--clouds-color), 2.2em -0.3em var(--back-clouds-color), 3.1em -1.2em 0 0.3em var(--clouds-color), 2.6em -0.4em var(--back-clouds-color), 2.7em -1.4em 0 0.3em var(--back-clouds-color);
+            transition: var(--transition);
+        }
+
+        .theme-switch__stars-container {
+            position: absolute;
+            color: var(--stars-color);
+            top: -100%;
+            left: 0.2em;
+            width: 1.8em;
+            height: auto;
+            transition: var(--transition);
+        }
+
+        /* Toggle actions */
+        .theme-switch__checkbox:checked + .theme-switch__container {
+            background-color: var(--container-night-bg);
+        }
+
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container {
+            left: calc(100% - var(--circle-container-offset) - var(--circle-container-diameter));
+        }
+
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container:hover {
+            left: calc(100% - var(--circle-container-offset) - var(--circle-container-diameter) - 0.12em)
+        }
+
+        .theme-switch__circle-container:hover {
+            left: calc(var(--circle-container-offset) + 0.12em);
+        }
+
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__moon {
+            transform: translate(0);
+        }
+
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__clouds {
+            bottom: -2.6em;
+        }
+
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__stars-container {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -361,103 +499,237 @@
             content: '▹';
             color: var(--primary);
         }
-        /* Projects Section - Horizontal Scroll */
+        /* Projects Section - Redesigned Grid Layout */
         .projects-section {
-            overflow-x: auto;
             padding-bottom: 2rem;
+            position: relative;
+            max-width: 1400px;
         }
         .projects-grid {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.5rem;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            /* Disable snap to allow perfectly smooth auto-scroll */
-            /* scroll-snap-type: x mandatory; */
-            -ms-overflow-style: none; /* IE/Edge */
-            scrollbar-width: none; /* Firefox */
-            /* Prevent user horizontal panning; allow vertical */
-            touch-action: pan-y;
-            overscroll-behavior-x: contain;
-        }
-        .projects-grid::-webkit-scrollbar { /* Chrome/Safari */
-            display: none;
-            width: 0;
-            height: 0;
+            padding: 0.5rem;
         }
         .project-card {
-            min-width: 320px;
-            max-width: 340px;
             background-color: var(--glass);
             backdrop-filter: blur(10px);
-            border-radius: 10px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            scroll-snap-align: start;
-            flex: 0 0 auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
+            height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
-        .project-card img{
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .project-card:hover::before {
+            opacity: 1;
         }
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 170, 255, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 170, 255, 0.2);
         }
-        .project-card:hover img{
-            transform: scale(1.05);
+        .project-image-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .project-card:hover img {
+            transform: scale(1.1);
+        }
+        .project-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .project-card:hover .project-image-overlay {
+            opacity: 1;
         }
         .project-info {
-            padding: 0.4rem 1.2rem 1.2rem;
+            padding: 1.25rem;
             flex: 1;
             display: flex;
             flex-direction: column;
+            gap: 0.75rem;
         }
         .project-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.6rem;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 0;
             color: var(--primary);
+            line-height: 1.3;
         }
         .project-info p {
-            margin-bottom: 1.2rem;
+            margin: 0;
             color: var(--gray);
-            font-size: 0.95rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .project-tech {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.2rem;
+            gap: 0.4rem;
+            margin-top: auto;
         }
         .tech-tag {
-            background-color: rgba(0, 170, 255, 0.1);
+            background: linear-gradient(135deg, rgba(0, 170, 255, 0.15) 0%, rgba(81, 0, 255, 0.15) 100%);
             color: var(--primary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
             font-weight: 500;
+            border: 1px solid rgba(0, 170, 255, 0.2);
+            transition: all 0.2s ease;
+        }
+        .tech-tag:hover {
+            background: linear-gradient(135deg, rgba(0, 170, 255, 0.25) 0%, rgba(81, 0, 255, 0.25) 100%);
+            transform: translateY(-1px);
         }
         .project-links {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 0.5rem;
         }
         .project-links a {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             color: var(--text-color);
             text-decoration: none;
             font-weight: 500;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            background: rgba(0, 170, 255, 0.1);
             transition: all 0.3s ease;
-            font-size: 0.9rem;
         }
         .project-links a:hover {
-            color: var(--primary);
+            background: var(--primary);
+            color: var(--text-color-dark);
+            transform: translateY(-2px);
         }
+        .project-links a i {
+            font-size: 0.9rem;
+        }
+        /* Hide navigation buttons - no longer needed with grid */
+        .projects-nav {
+            display: none;
+        }
+        
+        /* Featured project - spans 2 columns on larger screens */
+        .project-card.featured {
+            grid-column: span 1;
+        }
+        
+        @media (min-width: 768px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+            .project-card.featured {
+                grid-column: span 2;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+            .project-card.featured .project-image-container {
+                height: 100%;
+                min-height: 280px;
+            }
+            .project-card.featured .project-info {
+                padding: 1.5rem;
+                justify-content: center;
+            }
+            .project-card.featured .project-info p {
+                -webkit-line-clamp: 5;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .projects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .project-card.featured {
+                grid-column: span 2;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+                padding: 0;
+            }
+            .project-card {
+                border-radius: 12px;
+            }
+            .project-image-container {
+                height: 160px;
+            }
+            .project-info {
+                padding: 1rem;
+            }
+            .project-info h3 {
+                font-size: 1.1rem;
+            }
+            .project-info p {
+                font-size: 0.85rem;
+                -webkit-line-clamp: 2;
+            }
+            .tech-tag {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem;
+            }
+            .project-links {
+                flex-wrap: wrap;
+            }
+            .project-links a {
+                font-size: 0.75rem;
+                padding: 0.35rem 0.65rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .project-image-container {
+                height: 140px;
+            }
+            .project-info {
+                padding: 0.875rem;
+                gap: 0.5rem;
+            }
+        }
+        
         /* Timeline Section */
         .timeline {
             position: relative;
@@ -842,8 +1114,64 @@
     <section id="projects" class="projects-section">
         <h2 class="section-title">Featured Projects</h2>
         <div class="projects-grid">
+            <!-- Featured Project -->
+            <div class="project-card featured">
+                <div class="project-image-container">
+                    <img src="./mobasraat.jpg" alt="Mubashirat Dreams & Visions Interpretation App">
+                    <div class="project-image-overlay"></div>
+                </div>
+                <div class="project-info">
+                    <h3>Mubashirat – Dreams & Visions Interpretation</h3>
+                    <p>Collaborated with the MMD team to build a social platform for 50,000+ users with real-time posts, comments, and notifications. Reduced image upload latency by 10% via Firebase Storage optimization and caching.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Dart</span>
+                        <span class="tech-tag">Bloc</span>
+                        <span class="tech-tag">Firestore</span>
+                        <span class="tech-tag">FCM</span>
+                        <span class="tech-tag">Clean Architecture</span>
+                        <span class="tech-tag">Social Auth</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://play.google.com/store/apps/details?id=com.mubashirat&pcampaignid=web_share" target="_blank" aria-label="Google Play">
+                            <i class="fab fa-google-play"></i> Play Store
+                        </a>
+                        <a href="https://apps.apple.com/sa/app/%D9%85%D8%A8%D8%B4%D8%B1%D8%A7%D8%AA-%D8%AA%D9%81%D8%B3%D9%8A%D8%B1-%D8%A7%D9%84%D8%B1%D8%A4%D9%89-%D9%88-%D8%A7%D9%84%D8%A7%D8%AD%D9%84%D8%A7%D9%85/id6444949709" target="_blank" aria-label="App Store">
+                            <i class="fab fa-app-store-ios"></i> App Store
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
             <div class="project-card">
-                <img src="./al_awail.jpg" alt="Al Awail Educational App">
+                <div class="project-image-container">
+                    <img src="./request_app.jpg" alt="Request App">
+                    <div class="project-image-overlay"></div>
+                </div>
+                <div class="project-info">
+                    <h3>Request (اطلب)</h3>
+                    <p>On-demand service platform enabling users to request various services with real-time tracking and notifications.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Bloc</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">REST APIs</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://play.google.com/store/apps/details?id=com.Request.request" target="_blank" aria-label="Google Play">
+                            <i class="fab fa-google-play"></i> Play Store
+                        </a>
+                        <a href="https://request-order.com/" target="_blank" aria-label="App Store">
+                            <i class="fab fa-app-store-ios"></i> App Store
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-image-container">
+                    <img src="./al_awail.jpg" alt="Al Awail Educational App">
+                    <div class="project-image-overlay"></div>
+                </div>
                 <div class="project-info">
                     <h3>Al Awail (Educational App)</h3>
                     <p>Gamified learning platform with lessons and interactive challenges.</p>
@@ -856,70 +1184,99 @@
                     <div class="project-links"></div>
                 </div>
             </div>
+            
             <div class="project-card">
-                <img src="./split.jpg" alt="Splitwise-Style Expense Tracker">
+                <div class="project-image-container">
+                    <img src="./mosaad_app.jpg" alt="Mosaada Vehicle Assistance App">
+                    <div class="project-image-overlay"></div>
+                </div>
                 <div class="project-info">
-                    <h3>Splitwise-Style Expense Tracker</h3>
+                    <h3>Mosaada (Vehicle Assistance)</h3>
+                    <p>On-demand roadside assistance with geolocation and real-time updates.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">Geolocation</span>
+                        <span class="tech-tag">REST APIs</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://play.google.com/store/apps/details?id=com.mixcode.mosaada&hl=en" target="_blank" aria-label="Google Play">
+                            <i class="fab fa-google-play"></i> Play Store
+                        </a>
+                        <a href="https://apps.apple.com/eg/app/mosaada/id6746171199" target="_blank" aria-label="App Store">
+                            <i class="fab fa-app-store-ios"></i> App Store
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-image-container">
+                    <img src="./cofe.png" alt="Beanly Trading">
+                    <div class="project-image-overlay"></div>
+                </div>
+                <div class="project-info">
+                    <h3>Beanly Trading</h3>
+                    <p>Modern trading platform with real-time market data, portfolio tracking, and secure transactions.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">REST APIs</span>
+                        <span class="tech-tag">Bloc</span>
+                        <span class="tech-tag">Secure Storage</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://apps.apple.com/eg/app/beanly-trading/id6752859125" target="_blank" aria-label="App Store">
+                            <i class="fab fa-app-store-ios"></i> App Store
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-image-container">
+                    <img src="./pa.png" alt="Business Manager PA">
+                    <div class="project-image-overlay"></div>
+                </div>
+                <div class="project-info">
+                    <h3>مدير أعمالي PA</h3>
+                    <p>Comprehensive business management solution for organizing tasks and managing workflows.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Bloc</span>
+                        <span class="tech-tag">Local Storage</span>
+                        <span class="tech-tag">Clean Architecture</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://apps.apple.com/eg/app/%D9%85%D8%AF%D9%8A%D8%B1-%D8%A3%D8%B9%D9%85%D8%A7%D9%84%D9%8A-pa/id6752123380" target="_blank" aria-label="App Store">
+                            <i class="fab fa-app-store-ios"></i> App Store
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-image-container">
+                    <img src="./split.jpg" alt="Splitwise-Style Expense Tracker">
+                    <div class="project-image-overlay"></div>
+                </div>
+                <div class="project-info">
+                    <h3>Expense Tracker</h3>
                     <p>Group expenses with real-time summaries and notifications.</p>
                     <div class="project-tech">
                         <span class="tech-tag">Flutter</span>
                         <span class="tech-tag">Cloud Firestore</span>
                         <span class="tech-tag">Bloc</span>
-                        <span class="tech-tag">Local Notifications</span>
+                        <span class="tech-tag">Notifications</span>
                     </div>
                     <div class="project-links"></div>
                 </div>
             </div>
+            
             <div class="project-card">
-                <img src="./request_app.jpg" alt="Request App">
-                <div class="project-info">
-                    <h3>Request (اطلب)</h3>
-                    <p>On-demand service platform enabling users to request various services with real-time tracking and notifications.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Flutter</span>
-                        <span class="tech-tag">Bloc</span>
-                        <span class="tech-tag">Firebase</span>
-                        <span class="tech-tag">REST APIs</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://play.google.com/store/apps/details?id=com.Request.request" target="_blank" aria-label="Google Play">
-                            <i class="fab fa-google-play"></i> Google Play
-                        </a>
-                        <a href="https://apps.apple.com/us/app/request-%D8%A7%D8%B7%D9%84%D8%A8/id6670768152" target="_blank" aria-label="App Store">
-                            <i class="fab fa-app-store-ios"></i> App Store
-                        </a>
-                    </div>
+                <div class="project-image-container">
+                    <img src="./vpn_app.jpg" alt="VPN App">
+                    <div class="project-image-overlay"></div>
                 </div>
-            </div>
-            <div class="project-card">
-                <img src="./mobasraat.jpg" alt="Mubashirat Dreams & Visions Interpretation App">
-                <div class="project-info">
-                    <h3>Mubashirat – Dreams & Visions Interpretation</h3>
-                    <p>Collaborated with the MMD team to build a social platform for 50,000+ users with real-time posts, comments, and notifications, separating UI from business logic. Reduced image upload latency by 10% via Firebase Storage optimization and caching.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Dart</span>
-                        <span class="tech-tag">Bloc</span>
-                        <span class="tech-tag">Secure Storage</span>
-                        <span class="tech-tag">Firestore</span>
-                        <span class="tech-tag">FCM</span>
-                        <span class="tech-tag">Local Notifications</span>
-                        <span class="tech-tag">Social Auth</span>
-                        <span class="tech-tag">WebView</span>
-                        <span class="tech-tag">Themes</span>
-                        <span class="tech-tag">Clean Architecture</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://play.google.com/store/apps/details?id=com.mubashirat&pcampaignid=web_share" target="_blank" aria-label="Google Play">
-                            <i class="fab fa-google-play"></i> Google Play
-                        </a>
-                        <a href="https://apps.apple.com/sa/app/%D9%85%D8%A8%D8%B4%D8%B1%D8%A7%D8%AA-%D8%AA%D9%81%D8%B3%D9%8A%D8%B1-%D8%A7%D9%84%D8%B1%D8%A4%D9%89-%D9%88-%D8%A7%D9%84%D8%A7%D8%AD%D9%84%D8%A7%D9%85/id6444949709" target="_blank" aria-label="App Store">
-                            <i class="fab fa-app-store-ios"></i> App Store
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="project-card">
-                <img src="./vpn_app.jpg" alt="VPN App">
                 <div class="project-info">
                     <h3>VPN App</h3>
                     <p>Secure connection with caching & in-app purchase support.</p>
@@ -931,77 +1288,41 @@
                     <div class="project-links"></div>
                 </div>
             </div>
-            <div class="project-card">
-                <img src="./mosaad_app.jpg" alt="Mosaada Vehicle Assistance App">
-                <div class="project-info">
-                    <h3>Mosaada (Vehicle Assistance App)</h3>
-                    <p>On-demand roadside assistance with geolocation and real-time updates.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Flutter</span>
-                        <span class="tech-tag">Dart</span>
-                        <span class="tech-tag">Firebase</span>
-                        <span class="tech-tag">Geolocation</span>
-                        <span class="tech-tag">REST APIs</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://play.google.com/store/apps/details?id=com.mixcode.mosaada&hl=en" target="_blank" aria-label="Google Play">
-                            <i class="fab fa-google-play"></i> Google Play
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="project-card">
-                <img src="./request_app.jpg" alt="Immo Track">
-                <div class="project-info">
-                    <h3>Immo Track (Android & iOS)</h3>
-                    <p>Real estate task management app to assign tasks with instructions, track progress, and let employees submit status reports.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Bloc</span>
-                        <span class="tech-tag">Hive</span>
-                        <span class="tech-tag">FCM</span>
-                        <span class="tech-tag">Local Notifications</span>
-                        <span class="tech-tag">App Links</span>
-                        <span class="tech-tag">Localization</span>
-                    </div>
-                    <div class="project-links"></div>
-                </div>
-            </div>
         </div>
     </section>
-    <!-- Timeline Section -->
-    <section id="timeline">
-        <h2 class="section-title">My Journey</h2>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-date">Aug 2025 – Present</div>
-                    <h3 class="timeline-title">Flutter Developer – Mixcod</h3>
-                    <p>Building scalable mobile apps and leading technical solutions for Mixcod.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-date">Jul 2025 – Present</div>
-                    <h3 class="timeline-title">Mobile Development Instructor – ITI</h3>
-                    <p>Mentoring new developers and delivering advanced mobile development courses at the Information Technology Institute.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-date">Jun 2025 – Present</div>
-                    <h3 class="timeline-title">Mobile Development Instructor – NIT</h3>
-                    <p>Teaching mobile development and guiding students at the National Institute of Technology.</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-date">2022 – 2025</div>
-                    <h3 class="timeline-title">Bachelor’s Degree in Computer Science & AI</h3>
-                    <p>Graduated with honors, specializing in mobile development and artificial intelligence.</p>
-                </div>
+    <!-- Timeline Section --><section id="timeline">
+    <h2 class="section-title">My Journey</h2>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-date">June 2025 – September 2025</div>
+                <h3 class="timeline-title">Mobile Development Instructor – ITI</h3>
+                <p>Mentored over 10 students across two training groups, leading 3 junior teams to successfully build and deploy production-level mobile applications.</p>
             </div>
         </div>
-    </section>
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-date">March 2025 – October 2025</div>
+                <h3 class="timeline-title">Flutter Developer – MIX-CODERS</h3>
+                <p>Upgraded 30% of legacy code to clean code and reduced hints/warnings from 1.5K to 600, significantly improving performance.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-date">March 2024 – February 2025</div>
+                <h3 class="timeline-title">Software Engineer & Co-Founder – AnJ-Technologies</h3>
+                <p>Led full product lifecycles while collaborating with cross-functional teams, accelerating feature development by 25%.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-date">August 2022 – October 2023</div>
+                <h3 class="timeline-title">Flutter Developer – Mosly Media Development</h3>
+                <p>Optimized app performance using DevTools and implemented Bloc architecture, improving app responsiveness by 30%.</p>
+            </div>
+        </div>
+    </div>
+</section>
     <!-- Contact Section -->
     <section id="contact">
         <h2 class="section-title">Contact Information</h2>
@@ -1150,50 +1471,6 @@
             });
         }, { threshold: 0.15 });
         revealTargets.forEach(el => observer.observe(el));
-
-        // Auto-scroll Projects carousel when section is in view (seamless loop)
-        (function enableAutoScrollProjects() {
-            const projectsGrid = document.querySelector('.projects-grid');
-            const projectsSection = document.getElementById('projects');
-            if (!projectsGrid || !projectsSection) return;
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (reduceMotion) return;
-
-            // Duplicate children for seamless looping (only once)
-            const originalCards = Array.from(projectsGrid.children);
-            if (originalCards.length === 0) return;
-            const clones = originalCards.map(node => node.cloneNode(true));
-            projectsGrid.append(...clones);
-
-            let isPaused = false;
-            let isActive = false; // becomes true when section is on screen
-            let speedPxPerFrame = 0.6; // Adjust speed here
-
-            const pause = () => { isPaused = true; };
-            const resume = () => { isPaused = false; };
-            projectsGrid.addEventListener('mouseenter', pause);
-            projectsGrid.addEventListener('mouseleave', resume);
-            projectsGrid.addEventListener('touchstart', pause, { passive: true });
-            projectsGrid.addEventListener('touchend', resume, { passive: true });
-            const sectionObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    isActive = entry.isIntersecting;
-                });
-            }, { threshold: 0.25 });
-            sectionObserver.observe(projectsSection);
-
-            function tick() {
-                if (!isPaused && isActive) {
-                    projectsGrid.scrollLeft += speedPxPerFrame;
-                    const halfWidth = projectsGrid.scrollWidth / 2;
-                    if (projectsGrid.scrollLeft >= halfWidth) {
-                        // Jump back by half width without visual jump
-                        projectsGrid.scrollLeft -= halfWidth;
-                    }
-                }
-                requestAnimationFrame(tick);
-            }
-            requestAnimationFrame(tick);
-        })();
     </script>
 </body>
+</html>
